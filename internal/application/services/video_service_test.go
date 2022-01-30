@@ -36,7 +36,7 @@ func prepare() (*entities.Video, *repositories.VideoRepository) {
 	return video, repo
 }
 
-func TestVideoService_DownloadAndFragment(t *testing.T) {
+func TestVideoService_DownloadAndFragmentAndEncode(t *testing.T) {
 	video, repo := prepare()
 
 	credentials := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
@@ -50,5 +50,11 @@ func TestVideoService_DownloadAndFragment(t *testing.T) {
 	require.Nil(t, err)
 
 	err = service.Fragment()
+	require.Nil(t, err)
+
+	err = service.Encode()
+	require.Nil(t, err)
+
+	err = service.Finish()
 	require.Nil(t, err)
 }
