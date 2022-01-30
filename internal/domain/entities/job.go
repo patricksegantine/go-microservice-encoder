@@ -1,10 +1,17 @@
-package domain
+package entities
 
 import (
 	"time"
 
 	"github.com/asaskevich/govalidator"
 	uuid "github.com/satori/go.uuid"
+)
+
+//type JobStatus string
+
+const (
+	JobStatusPending  string = "Pending"
+	JobStatusComplete string = "Complete"
 )
 
 type Job struct {

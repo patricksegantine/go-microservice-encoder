@@ -1,7 +1,7 @@
-package domain_test
+package entities_test
 
 import (
-	"encoder/internal/domain"
+	"encoder/internal/domain/entities"
 	"testing"
 	"time"
 
@@ -10,12 +10,12 @@ import (
 )
 
 func TestNewJob(t *testing.T) {
-	video := domain.NewVideo()
+	video := entities.NewVideo()
 	video.ID = uuid.NewV4().String()
 	video.FilePath = "path"
 	video.CreatedAt = time.Now()
 
-	job, err := domain.NewJob("path", "converted", video)
+	job, err := entities.NewJob("path", "converted", video)
 	require.NotNil(t, job)
 	require.Nil(t, err)
 }

@@ -1,7 +1,7 @@
-package domain_test
+package entities_test
 
 import (
-	"encoder/internal/domain"
+	"encoder/internal/domain/entities"
 	"testing"
 	"time"
 
@@ -10,14 +10,14 @@ import (
 )
 
 func TestValidateIfVideoIsEmpty(t *testing.T) {
-	video := domain.NewVideo()
+	video := entities.NewVideo()
 	err := video.Validate()
 
 	require.Error(t, err)
 }
 
 func TestVideoWhenIdIsUuid(t *testing.T) {
-	video := domain.NewVideo()
+	video := entities.NewVideo()
 	video.ID = uuid.NewV4().String()
 	video.ResourceID = "Video resource id"
 	video.FilePath = "path"
@@ -29,7 +29,7 @@ func TestVideoWhenIdIsUuid(t *testing.T) {
 }
 
 func TestVideoWhenIdIsNotUuid(t *testing.T) {
-	video := domain.NewVideo()
+	video := entities.NewVideo()
 	video.ID = "123456"
 	video.ResourceID = "Video resource id"
 	video.FilePath = "path"

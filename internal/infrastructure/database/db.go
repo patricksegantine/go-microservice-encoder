@@ -1,7 +1,7 @@
 package database
 
 import (
-	"encoder/internal/domain"
+	"encoder/internal/domain/entities"
 	"log"
 
 	"github.com/jinzhu/gorm"
@@ -18,29 +18,7 @@ type Database struct {
 	Env           string
 }
 
-func NewDb() *Database {
-	return &Database{}
-}
-
-func NewDbTest() *gorm.DB {
-	dbInstance := NewDb()
-	dbInstance.Env = "Test"
-	dbInstance.DbType = "sqlite3"
-	dbInstance.Dsn = ":memory:"
-	dbInstance.AutoMigrateDb = true
-	dbInstance.Debug = true
-
-	connection, err := dbInstance.Connect()
-
-	if err != nil {
-		log.Fatalf("Test db error: %v", err)
-	}
-
-	return connection
-}
-
 func (d *Database) Connect() (*gorm.DB, error) {
-
 	var err error
 	d.Db, err = gorm.Open(d.DbType, d.Dsn)
 
@@ -53,9 +31,9 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	}
 
 	if d.AutoMigrateDb {
-		d.Db.AutoMigrate(&domain.Video{}, &domain.Job{})
+		d.Db.AutoMigrate(&entities.Video{}, &entities.Job{})
 
-		d.Db.Model(domain.Job{}).AddForeignKey(
+		d.Db.Model(entities.Job{}).AddForeignKey(
 			"video_id",
 			"videos (id)",
 			"CASCADE",
@@ -64,4 +42,25 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	}
 
 	return d.Db, nil
+}
+
+func NewDb() *Database {
+	return &Database{}
+}
+
+func NewDbTest() *gorm.DB {
+	dbInstance := NewDb()
+	dbInstance.Env = "test"
+	dbInstance.DbType = "sqlite3"
+	dbInstance.Dsn = ":memory:"
+	dbInstance.AutoMigrateDb = true
+	dbInstance.Debug = true
+
+	connection, err := dbInstance.Connect()
+
+	if err != nil {
+		log.Fatalf("Test db error: %v", err)
+	}
+
+	return connection
 }
