@@ -16,6 +16,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	OutputBucketName = "seganta-video-encoder"
+)
+
 func init() {
 	err := godotenv.Load("../../../configs/.env.local")
 	if err != nil {
@@ -46,7 +50,7 @@ func TestVideoService_DownloadAndFragmentAndEncode(t *testing.T) {
 	service.Video = video
 	service.VideoRepository = repo
 
-	err := service.Download("seganta-video-encoder")
+	err := service.Download(OutputBucketName)
 	require.Nil(t, err)
 
 	err = service.Fragment()
